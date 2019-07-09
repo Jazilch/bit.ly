@@ -1,0 +1,39 @@
+version: '3.1'
+services:
+  # client:
+  #   build: './client'
+  #   restart: always
+  #   ports:
+  #      - "3000:3000"
+  #   volumes:
+  #     - ./client:/client
+  #   links:
+  #     - api
+
+  server:
+    build: './server'
+    restart: always
+    ports:
+      - "9000:9000"
+    links:
+      - mysqldb
+    depends_on:
+      - mysqldb
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+  mysqldb:
+    image: mysql:5.6
+    container_name: bitly_database
+    hostname: mysql
+    ports:
+     - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}

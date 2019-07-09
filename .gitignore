@@ -1,0 +1,8 @@
+dist/
+log/
+
+*.env
+*.pem
+*.csr
+*.crt
+*.key
