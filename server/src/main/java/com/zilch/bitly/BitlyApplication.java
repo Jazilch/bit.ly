@@ -34,20 +34,16 @@ public class BitlyApplication extends Application<BitlyConfiguration> {
     final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "mysql");
     final PersonDAO personDAO = jdbi.onDemand(PersonDAO.class);
     final PersonResource personResource = new PersonResource(personDAO);
-
-    environment.jersey().register(personResource);
-    // hello world resource
     final BitlyResource resource = new BitlyResource(
         configuration.getTemplate(),
         configuration.getDefaultName()
     );
-    environment.jersey().register(resource);
-    // shorten resource
     final ShortenURlResource shorten = new ShortenURlResource();
-    environment.jersey().register(shorten);
-    // health check
     final TemplateHealthCheck healthCheck =
         new TemplateHealthCheck(configuration.getTemplate());
+    environment.jersey().register(personResource);
+    environment.jersey().register(resource);
+    environment.jersey().register(shorten);
     environment.healthChecks().register("template", healthCheck);
   }
 }
